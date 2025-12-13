@@ -1,0 +1,729 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Book — TravelX (Karnataka)</title>
+  <style>
+    :root{
+      --teal:#008080;
+      --teal-dark:#006666;
+      --muted:#666;
+      --card-bg:#fff;
+      --glass: rgba(255,255,255,0.92);
+      --maxw:1100px;
+      --radius:12px;
+      --shadow: 0 8px 30px rgba(0,0,0,0.12);
+      --glass-2: rgba(255,255,255,0.7);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;font-family:"Segoe UI", Roboto, Arial, sans-serif;background:#f5f7f8;color:#142;-webkit-font-smoothing:antialiased;}
+    a{color:inherit}
+    /* Header */
+    header {
+      background: var(--teal);
+      color: white;
+      padding:12px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      position:sticky; top:0; z-index:50;
+    }
+    .logo{font-weight:700; font-size:1.2rem}
+    nav{display:flex; align-items:center}
+    nav ul{display:flex; gap:12px; list-style:none}
+    nav a{color:white; text-decoration:none; padding:8px 10px; border-radius:8px; font-weight:600}
+    nav a:hover, nav a.active{background:var(--teal-dark)}
+    .hamburger{display:none; width:40px;height:40px;border-radius:8px;border:none;background:transparent;color:white;cursor:pointer;align-items:center;justify-content:center}
+
+    /* Hero with WHITE background as requested */
+    .hero{
+      background: #ffffff;            /* <-- white background */
+      color: var(--teal);
+      text-align:center;
+      padding:32px 18px;
+      border-bottom-left-radius:12px;
+      border-bottom-right-radius:12px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.04);
+    }
+    .hero h1{
+      font-size:clamp(1.6rem,3vw,2.4rem);
+      margin-bottom:8px;
+      font-weight:800;
+      letter-spacing:0.6px;
+      color:var(--teal);
+    }
+    .hero p{
+      color:var(--muted);
+      display:inline-block;
+      padding:8px 18px;
+      border-radius:999px;
+      font-weight:600;
+      font-size:1rem;
+      letter-spacing:0.3px;
+      background: rgba(0,0,0,0.02);
+    }
+
+    /* Container */
+    .wrap{max-width:var(--maxw);margin:-20px auto 40px;padding:18px}
+    .card{background:var(--glass);border-radius:16px;padding:18px;box-shadow:var(--shadow);overflow:hidden}
+
+    /* Multi-step layout */
+    .steps{display:flex;gap:12px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+    .step{
+      flex:1; min-width:120px; padding:10px;border-radius:12px;background:#fff;display:flex;align-items:center;gap:8px;
+      border:1px solid rgba(0,0,0,0.06)
+    }
+    .step.active{border-color:var(--teal);box-shadow:0 6px 18px rgba(0,128,128,0.06)}
+    .step .title{font-weight:700;color:var(--teal);font-size:0.95rem}
+
+    .layout{display:grid;grid-template-columns: 1fr 360px; gap:18px;align-items:start}
+    .left{padding:6px}
+    .right{position:relative}
+    .panel{background:var(--card-bg);border-radius:12px;padding:14px;box-shadow:0 4px 18px rgba(0,0,0,0.06)}
+
+    /* form elements */
+    label{display:block;font-weight:600;margin-top:12px;color:#254}
+    input[type="text"], input[type="email"], input[type="tel"], input[type="date"], select, textarea, input[type="number"]{
+      width:100%; padding:10px;border-radius:10px;border:1px solid #e3e6e8;margin-top:6px;font-size:14px;background:white
+    }
+    textarea{min-height:90px;resize:vertical}
+    .btn {display:inline-block;padding:10px 14px;border-radius:10px;background:var(--teal);color:white;text-decoration:none;font-weight:700;border:none;cursor:pointer}
+    .btn.ghost{background:transparent;color:var(--teal);border:1px solid rgba(0,128,128,0.12)}
+    .muted{color:var(--muted);font-size:0.95rem}
+
+    /* traveler list */
+    .traveler-row{display:flex;gap:8px;margin-top:10px}
+    .traveler-row input{flex:1}
+
+    /* summary */
+    .summary-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #eee}
+    .summary-row.total{font-weight:800;font-size:1.05rem;color:var(--teal)}
+
+    /* small screens */
+    @media (max-width:980px){
+      .layout{grid-template-columns: 1fr}
+      .right{order:2}
+      .left{order:1}
+    }
+    @media (max-width:720px){
+      nav ul{display:none;position:fixed;top:60px;right:12px;background:white;padding:12px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,0.12);flex-direction:column;width:220px}
+      nav ul.show{display:flex}
+      .hamburger{display:flex}
+      .wrap{margin-top:8px;padding:12px}
+      .card{padding:12px}
+      .steps{gap:8px}
+    }
+
+    /* small helpers */
+    .note{font-size:0.92rem;color:var(--muted);margin-top:8px}
+    .text-right{text-align:right}
+    .center{text-align:center}
+    .hidden{display:none}
+    .error{color:#c12;font-weight:700;font-size:0.95rem;margin-top:8px}
+    .success{color:green;font-weight:700;margin-top:8px}
+
+    /* UNIQUE SUCCESS POPUP STYLES */
+    .success-popup-back {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(2,10,10,0.45);
+      z-index: 200;
+      backdrop-filter: blur(4px);
+      animation: fadeIn .18s ease forwards;
+    }
+    .success-popup {
+      width: min(460px, calc(100% - 40px));
+      background: linear-gradient(180deg, #ffffff, #fbfffc);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 18px 60px rgba(0,64,64,0.18);
+      display:flex;
+      gap:12px;
+      align-items:center;
+      transform: translateY(18px) scale(.98);
+      opacity: 0;
+      animation: popIn .28s cubic-bezier(.2,.9,.3,1) forwards;
+      border: 1px solid rgba(0,128,128,0.06);
+    }
+    .success-icon {
+      width:84px;height:84px;border-radius:12px;flex:0 0 84px;background:linear-gradient(135deg,var(--teal),var(--teal-dark));display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:28px;box-shadow:0 10px 30px rgba(0,128,128,0.14)
+    }
+    .success-content { flex:1 }
+    .success-title { font-size:18px;font-weight:800;color:#064; margin-bottom:6px }
+    .success-sub { color:var(--muted); margin-bottom:8px; font-weight:600 }
+    .success-id { display:flex;gap:8px;align-items:center;margin-top:8px }
+    .id-box { background:#f3fffb;border:1px dashed rgba(0,128,128,0.08);padding:8px 10px;border-radius:8px;font-weight:700;color:var(--teal) }
+    .copy-btn { background:transparent;border:1px solid rgba(0,128,128,0.12);padding:6px 8px;border-radius:8px;cursor:pointer;color:var(--teal);font-weight:700 }
+    .popup-close { background:transparent;border:none;color:var(--muted);font-weight:700;cursor:pointer;padding:6px 8px;border-radius:8px }
+
+    @keyframes popIn {
+      from { transform: translateY(18px) scale(.98); opacity:0 }
+      to { transform: translateY(0) scale(1); opacity:1 }
+    }
+    @keyframes fadeIn {
+      from { background: rgba(2,10,10,0) }
+      to { background: rgba(2,10,10,0.45) }
+    }
+
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">TravelX</div>
+    <nav aria-label="Main navigation">
+      <button class="hamburger" id="hamburger" aria-expanded="false" aria-label="Open menu">
+        <svg width="20" height="14" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="24" height="2" y="0" rx="1" fill="white"/>
+          <rect width="24" height="2" y="8" rx="1" fill="white"/>
+          <rect width="24" height="2" y="16" rx="1" fill="white"/>
+        </svg>
+      </button>
+
+      <ul id="nav-list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="tours.html">Tours</a></li>
+        <li><a href="booking.html" class="active">Book</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="mybookings.html">My Bookings</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- HERO with white background -->
+  <section class="hero" aria-hidden="true">
+    <div style="padding:18px;text-align:center;max-width:900px;margin:0 auto;">
+      <h1>Discover Karnataka with TravelX</h1>
+      <p>Explore, book, and experience your next adventure with ease and confidence.</p>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="card">
+      <div class="steps" aria-hidden="false">
+        <div class="step active" id="stepIndicator-1"><div class="title">1. Package</div></div>
+        <div class="step" id="stepIndicator-2"><div class="title">2. Travelers</div></div>
+        <div class="step" id="stepIndicator-3"><div class="title">3. Review & Pay</div></div>
+      </div>
+
+      <div class="layout">
+        <!-- LEFT: forms -->
+        <div class="left">
+          <!-- STEP 1 -->
+          <div class="panel" id="step-1">
+            <h3 style="margin:0 0 6px 0;color:var(--teal)">Select / Confirm Package</h3>
+            <p class="muted">If you clicked Book from a tour, it will prefill the package below.</p>
+
+            <label for="pkgSelect">Choose package</label>
+            <select id="pkgSelect" aria-describedby="pkgHelp">
+              <option value="">-- Select package --</option>
+              <!-- Values are per-person prices now (consistent with visible text) -->
+              <option value="Coorg|2025-12-10|6000">Coorg Coffee Hills — 3 days — ₹6,000</option>
+              <option value="Mysuru|2025-11-20|700">Mysuru Palace — 1 day — ₹700</option>
+              <option value="Hampi|2025-10-05|3000">Hampi Heritage — 2 days — ₹3,000</option>
+              <option value="Gokarna|2025-11-05|4000">Gokarna Beach Escape — 3 days — ₹4,000</option>
+              <option value="Chikmagalur|2025-09-25|3500">Chikmagalur Coffee Trails — 2 days — ₹3,500</option>
+              <option value="Kabini|2026-01-12|9000">Kabini Safari — 2 days — ₹9,000</option>
+              <option value="Badami|2025-11-02|3500">Badami & Pattadakal — 2 days — ₹3,500</option>
+              <option value="Dandeli|2025-08-20|3500">Dandeli Adventure — 2 days — ₹3,500</option>
+              <option value="JogFalls|2025-07-10|1800">Jog Falls Excursion — 1 day — ₹1,800</option>
+              <option value="Bandipur|2025-12-28|6000">Bandipur Safari — 2 days — ₹6,000</option>
+              <option value="BRHills|2025-11-14|3000">B.R. Hills — 2 days — ₹3,000</option>
+              <option value="Udupi|2025-11-18|3500">Udupi & Malpe — 1-2 days — ₹3,500</option>
+              <option value="Sakleshpur|2025-09-08|5000">Sakleshpur Retreat — 1-2 days — ₹5,000</option>
+              <option value="BelurHalebidu|2025-10-22|1200">Belur & Halebidu — 1 day — ₹1,200</option>
+              <option value="Murudeshwar|2025-12-05|3500">Murudeshwar Coast — 1-2 days — ₹3,500</option>
+            </select>
+
+            <div id="pkgHelp" class="note">Tip: If you navigated here from a tour card, the package should be pre-selected automatically.</div>
+
+            <label for="dateInput">Travel Date</label>
+            <input type="date" id="dateInput" required>
+
+            <label for="nights">Number of Days (auto suggestion)</label>
+            <input type="number" id="nights" min="1" max="15" value="2">
+
+            <div style="display:flex;gap:10px;margin-top:14px;">
+              <button class="btn" id="toStep2">Continue</button>
+              <button class="btn ghost" id="resetBtn" type="button">Reset</button>
+            </div>
+            <div id="pkgError" class="error hidden" role="alert"></div>
+          </div>
+
+          <!-- STEP 2 -->
+          <div class="panel hidden" id="step-2">
+            <h3 style="margin:0 0 6px 0;color:var(--teal)">Traveler Details</h3>
+            <p class="muted">Add one or more travelers. We'll collect contact info for primary contact below.</p>
+
+            <label for="primaryName">Primary contact name</label>
+            <input id="primaryName" type="text" placeholder="Full name" required>
+
+            <label for="primaryEmail">Email</label>
+            <input id="primaryEmail" type="email" placeholder="you@example.com" required>
+
+            <label for="primaryPhone">Phone</label>
+            <input id="primaryPhone" type="tel" placeholder="10-digit phone" pattern="[0-9]{10}" required>
+
+            <label>Travelers</label>
+            <div id="travelerList"></div>
+
+            <div style="display:flex;gap:10px;margin-top:12px;align-items:center">
+              <button class="btn ghost" id="addTravelerBtn" type="button">+ Add traveler</button>
+              <div class="muted">You can add up to 8 travelers</div>
+            </div>
+
+            <div style="display:flex;gap:10px;margin-top:14px;">
+              <button class="btn" id="backTo1" type="button">Back</button>
+              <button class="btn" id="toStep3" type="button">Review & Pay</button>
+            </div>
+
+            <div id="travError" class="error hidden" role="alert"></div>
+          </div>
+
+          <!-- STEP 3 -->
+          <div class="panel hidden" id="step-3">
+            <h3 style="margin:0 0 6px 0;color:var(--teal)">Review & Confirm</h3>
+            <p class="muted">Check details and confirm your booking. Payment is simulated in this demo.</p>
+
+            <div id="reviewBox" style="margin-top:12px"></div>
+
+            <label style="margin-top:12px">Payment Method</label>
+            <select id="paymentMethod" aria-label="Select payment method">
+              <option value="offline">Pay at counter (offline)</option>
+            </select>
+
+            <div id="paymentArea" style="margin-top:12px"></div>
+
+            <div style="display:flex;gap:10px;margin-top:14px;">
+              <button class="btn" id="backTo2" type="button">Back</button>
+              <button class="btn" id="confirmBookingBtn" type="button">Confirm booking</button>
+            </div>
+
+            <div id="finalMsg" class="muted" style="margin-top:12px"></div>
+            <div id="finalStatus" class="success" role="status"></div>
+          </div>
+        </div>
+
+        <!-- RIGHT: summary -->
+        <aside class="right">
+          <div class="panel">
+            <h4 style="margin:0 0 8px 0;color:var(--teal)">Booking Summary</h4>
+            <div class="muted">Package</div>
+            <div id="sumPkg" style="font-weight:700;margin-top:6px">—</div>
+
+            <div style="margin-top:10px">
+              <div class="summary-row"><div>Per person</div><div id="sumPer">—</div></div>
+              <div class="summary-row"><div>Travelers</div><div id="sumTrav">—</div></div>
+              <div class="summary-row"><div>Extras</div><div id="sumExtra">—</div></div>
+              <div class="summary-row total"><div>Total</div><div id="sumTotal">—</div></div>
+            </div>
+
+            <div class="note" style="margin-top:12px">You can review and change details before confirming.</div>
+          </div>
+
+          <div style="height:12px"></div>
+
+          <div class="panel">
+            <h4 style="margin:0 0 8px 0;color:var(--teal)">Need help?</h4>
+            <p class="muted">Call our Karnataka support: +91 8618521181 or email support@travelx.example</p>
+            <div style="margin-top:8px" class="center">
+              <a href="tel:+91 8618521181" class="btn ghost">Call now</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <!-- UNIQUE SUCCESS POPUP -->
+  <div id="successPopupBack" class="success-popup-back" role="dialog" aria-hidden="true">
+    <div class="success-popup" role="document" aria-live="polite" tabindex="-1">
+      <div class="success-icon">✓</div>
+      <div class="success-content">
+        <div class="success-title" id="successTitle">Booked successfully</div>
+        <div class="success-sub" id="successSub">Thank you — your booking is confirmed.</div>
+        <div class="success-id">
+          <div class="id-box" id="successId">TX12345678</div>
+          <button class="copy-btn" id="copyIdBtn" type="button">Copy ID</button>
+          <button class="popup-close" id="closePopupBtn" type="button">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Mobile nav toggle
+    const hamburger = document.getElementById('hamburger');
+    const navList = document.getElementById('nav-list');
+    hamburger.addEventListener('click', () => {
+      const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+      hamburger.setAttribute('aria-expanded', String(!expanded));
+      navList.classList.toggle('show');
+    });
+    document.addEventListener('click', (e) => {
+      if (!navList.contains(e.target) && !hamburger.contains(e.target) && navList.classList.contains('show')) {
+        navList.classList.remove('show');
+        hamburger.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    /* --- Booking logic --- */
+    const pkgSelect = document.getElementById('pkgSelect');
+    const dateInput = document.getElementById('dateInput');
+    const nights = document.getElementById('nights');
+    const toStep2 = document.getElementById('toStep2');
+    const resetBtn = document.getElementById('resetBtn');
+    const pkgError = document.getElementById('pkgError');
+
+    const step1 = document.getElementById('step-1');
+    const step2 = document.getElementById('step-2');
+    const step3 = document.getElementById('step-3');
+
+    const stepIndicator1 = document.getElementById('stepIndicator-1');
+    const stepIndicator2 = document.getElementById('stepIndicator-2');
+    const stepIndicator3 = document.getElementById('stepIndicator-3');
+
+    const primaryName = document.getElementById('primaryName');
+    const primaryEmail = document.getElementById('primaryEmail');
+    const primaryPhone = document.getElementById('primaryPhone');
+    const travelerList = document.getElementById('travelerList');
+    const addTravelerBtn = document.getElementById('addTravelerBtn');
+    const travError = document.getElementById('travError');
+
+    const reviewBox = document.getElementById('reviewBox');
+    const paymentMethod = document.getElementById('paymentMethod');
+    const paymentArea = document.getElementById('paymentArea');
+    const confirmBookingBtn = document.getElementById('confirmBookingBtn');
+    const finalStatus = document.getElementById('finalStatus');
+    const finalMsg = document.getElementById('finalMsg');
+
+    const sumPkg = document.getElementById('sumPkg');
+    const sumPer = document.getElementById('sumPer');
+    const sumTrav = document.getElementById('sumTrav');
+    const sumExtra = document.getElementById('sumExtra');
+    const sumTotal = document.getElementById('sumTotal');
+
+    // success popup elements
+    const successBack = document.getElementById('successPopupBack');
+    const successIdBox = document.getElementById('successId');
+    const successTitle = document.getElementById('successTitle');
+    const successSub = document.getElementById('successSub');
+    const copyIdBtn = document.getElementById('copyIdBtn');
+    const closePopupBtn = document.getElementById('closePopupBtn');
+
+    // Initial traveler
+    let travelers = [{name: '', age: '', type: 'adult'}];
+
+    function renderTravelers(){
+      travelerList.innerHTML = '';
+      travelers.forEach((t,i) => {
+        const div = document.createElement('div');
+        div.className = 'traveler-row';
+        div.innerHTML = `
+          <input placeholder="Traveler ${i+1} name" value="${t.name || ''}" data-i="${i}" class="trav-name" />
+          <input placeholder="Age" value="${t.age || ''}" data-i="${i}" class="trav-age" style="width:84px" />
+          <button class="btn ghost" data-i="${i}" style="padding:6px 10px">Remove</button>
+        `;
+        travelerList.appendChild(div);
+      });
+      travelerList.querySelectorAll('.trav-name').forEach(el=>{
+        el.addEventListener('input', e=>{
+          const i = +e.target.dataset.i;
+          travelers[i].name = e.target.value;
+          updateSummary();
+        });
+      });
+      travelerList.querySelectorAll('.trav-age').forEach(el=>{
+        el.addEventListener('input', e=>{
+          const i = +e.target.dataset.i;
+          travelers[i].age = e.target.value;
+        });
+      });
+      travelerList.querySelectorAll('button').forEach(btn=>{
+        btn.addEventListener('click', (e)=>{
+          const i = +e.target.dataset.i;
+          if(travelers.length<=1) return;
+          travelers.splice(i,1);
+          renderTravelers();
+          updateSummary();
+        });
+      });
+    }
+    renderTravelers();
+
+    addTravelerBtn.addEventListener('click', ()=>{
+      if(travelers.length >= 8) return;
+      travelers.push({name:'', age:'', type:'adult'});
+      renderTravelers();
+      updateSummary();
+    });
+
+    // Prefill from query string ?package=Name
+    (function prefillFromQuery(){
+      const params = new URLSearchParams(location.search);
+      const pkg = params.get('package');
+      if(pkg){
+        for(const opt of pkgSelect.options){
+          if(opt.value && opt.value.toLowerCase().startsWith(pkg.toLowerCase())){
+            pkgSelect.value = opt.value;
+            const parts = opt.value.split('|');
+            if(parts[1]) dateInput.value = parts[1];
+            break;
+          }
+        }
+      }
+    })();
+
+    function parsePkg(val){
+      if(!val) return null;
+      const parts = val.split('|');
+      // parts: [name, date, price]
+      return {name: parts[0], date: parts[1]||'', price: Number(parts[2]||0)};
+    }
+
+    // Robust updateSummary
+    function updateSummary(){
+      const pkg = parsePkg(pkgSelect.value);
+      const numTrav = travelers.length;
+      // Make sure price is a finite number; fallback to 0
+      let per = 0;
+      if(pkg && typeof pkg.price !== 'undefined'){
+        const p = Number(pkg.price);
+        if(!Number.isFinite(p) || isNaN(p)){
+          console.warn('Invalid package price for', pkg, '->', pkg.price);
+          per = 0;
+        } else {
+          per = p;
+        }
+      }
+      const extras = 0;
+      const total = per * numTrav + extras;
+
+      // Friendly display values
+      sumPkg.textContent = pkg ? `${pkg.name} (${pkg.date || 'date TBD'})` : '—';
+      sumPer.textContent = per ? `₹${per.toLocaleString('en-IN')}` : '—';
+      sumTrav.textContent = `${numTrav}`;
+      sumExtra.textContent = extras ? `₹${extras.toLocaleString('en-IN')}` : '—';
+      sumTotal.textContent = total ? `₹${total.toLocaleString('en-IN')}` : '—';
+    }
+    updateSummary();
+
+    // Step navigation
+    toStep2.addEventListener('click', (e)=>{
+      pkgError.classList.add('hidden'); pkgError.textContent='';
+      const pkg = parsePkg(pkgSelect.value);
+      if(!pkg){ pkgError.textContent='Please select a package.'; pkgError.classList.remove('hidden'); return; }
+      if(!dateInput.value){ pkgError.textContent='Please select a travel date.'; pkgError.classList.remove('hidden'); return; }
+      step1.classList.add('hidden'); step2.classList.remove('hidden');
+      stepIndicator1.classList.remove('active'); stepIndicator2.classList.add('active');
+      updateSummary();
+    });
+
+    resetBtn.addEventListener('click', ()=>{
+      pkgSelect.value=''; dateInput.value=''; nights.value=2;
+      travelers = [{name:'',age:'',type:'adult'}]; renderTravelers(); updateSummary();
+    });
+
+    // Step 2 controls
+    document.getElementById('backTo1').addEventListener('click', ()=>{
+      step2.classList.add('hidden'); step1.classList.remove('hidden');
+      stepIndicator2.classList.remove('active'); stepIndicator1.classList.add('active');
+    });
+
+    document.getElementById('toStep3').addEventListener('click', ()=>{
+      travError.classList.add('hidden'); travError.textContent='';
+      if(!primaryName.value.trim()){ travError.textContent='Enter primary contact name.'; travError.classList.remove('hidden'); return; }
+      if(!primaryEmail.value.trim()){ travError.textContent='Enter primary contact email.'; travError.classList.remove('hidden'); return; }
+      if(!primaryPhone.value.trim() || !/^\d{10}$/.test(primaryPhone.value)){ travError.textContent='Enter a valid 10-digit phone number.'; travError.classList.remove('hidden'); return; }
+      const validTrav = travelers.filter(t => t.name && t.name.trim()).length;
+      if(validTrav < 1){ travError.textContent='Add at least one traveler with a name.'; travError.classList.remove('hidden'); return; }
+      step2.classList.add('hidden'); step3.classList.remove('hidden');
+      stepIndicator2.classList.remove('active'); stepIndicator3.classList.add('active');
+      buildReview();
+    });
+
+    // back from step3
+    document.getElementById('backTo2').addEventListener('click', ()=>{
+      step3.classList.add('hidden'); step2.classList.remove('hidden');
+      stepIndicator3.classList.remove('active'); stepIndicator2.classList.add('active');
+    });
+
+    // Build review content
+    function buildReview(){
+      const pkg = parsePkg(pkgSelect.value) || {name:'—', price:0, date:''};
+      const totalPer = pkg.price;
+      const totalTrav = travelers.length;
+      const total = totalPer * totalTrav;
+
+      let html = '';
+      html += `<div><strong>Package:</strong> ${escapeHtml(pkg.name)} (${pkg.date || 'TBD'})</div>`;
+      html += `<div class="muted" style="margin-top:6px">${escapeHtml(pkg.name)} — ${escapeHtml(nights.value)} days</div>`;
+      html += `<hr style="margin:10px 0">`;
+      html += `<div><strong>Primary contact:</strong><br>${escapeHtml(primaryName.value)} • ${escapeHtml(primaryEmail.value)} • ${escapeHtml(primaryPhone.value)}</div>`;
+      html += `<hr style="margin:10px 0">`;
+      html += `<div><strong>Travelers (${totalTrav}):</strong><ul style="margin-top:6px">`;
+      travelers.forEach(t=>{
+        html += `<li>${escapeHtml(t.name || '—')} ${t.age ? '('+escapeHtml(t.age)+')' : ''}</li>`;
+      });
+      html += `</ul></div>`;
+      html += `<hr style="margin:10px 0">`;
+      html += `<div class="summary-row"><div>Per person</div><div>₹${Number(totalPer).toLocaleString('en-IN')}</div></div>`;
+      html += `<div class="summary-row"><div>Travelers</div><div>${totalTrav}</div></div>`;
+      html += `<div class="summary-row total"><div>Total</div><div>₹${Number(total).toLocaleString('en-IN')}</div></div>`;
+      reviewBox.innerHTML = html;
+
+      updateSummary();
+      finalMsg.textContent = '';
+      finalStatus.textContent = '';
+      renderPaymentArea();
+    }
+
+    // Payment UI — only offline option remains
+    paymentMethod.addEventListener('change', renderPaymentArea);
+    function renderPaymentArea(){
+      // Only offline is available
+      paymentArea.innerHTML = `<div class="note">Select "Confirm booking" to complete the reservation. You can pay at our counter or discuss payment with support after booking.</div>`;
+    }
+    renderPaymentArea();
+
+    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c])); }
+
+    function saveBookingLocally(payload, bookingId) {
+      try {
+        const key = 'travelx_bookings';
+        const raw = JSON.parse(localStorage.getItem(key) || '[]');
+        const entry = Object.assign({}, payload, {
+          _id: bookingId || (payload.bookingId || 'local-' + Date.now().toString(36)),
+          bookingId: bookingId || (payload.bookingId || 'local-' + Date.now().toString(36)),
+          createdAt: new Date().toISOString()
+        });
+        raw.unshift(entry);
+        localStorage.setItem(key, JSON.stringify(raw.slice(0,200)));
+      } catch (e) {
+        console.warn('Could not save booking locally', e);
+      }
+    }
+
+    // show the unique success popup with booking id
+    function showSuccessPopup(bookingId, packageName) {
+      successIdBox.textContent = bookingId || '—';
+      successTitle.textContent = 'Booked successfully';
+      successSub.textContent = packageName ? `Your ${packageName} booking is confirmed.` : 'Your booking is confirmed.';
+      successBack.style.display = 'flex';
+      successBack.setAttribute('aria-hidden','false');
+      // focus for accessibility
+      successBack.querySelector('.success-popup').focus();
+    }
+
+    // close popup
+    function hideSuccessPopup(){
+      successBack.style.display = 'none';
+      successBack.setAttribute('aria-hidden','true');
+    }
+
+    // copy ID button
+    copyIdBtn.addEventListener('click', ()=>{
+      const text = successIdBox.textContent || '';
+      if(!text) return;
+      navigator.clipboard?.writeText(text).then(()=> {
+        copyIdBtn.textContent = 'Copied';
+        setTimeout(()=> copyIdBtn.textContent = 'Copy ID', 1400);
+      }).catch(()=> {
+        // fallback
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); copyIdBtn.textContent = 'Copied'; setTimeout(()=> copyIdBtn.textContent = 'Copy ID', 1400); } catch(e){ }
+        ta.remove();
+      });
+    });
+
+    closePopupBtn.addEventListener('click', hideSuccessPopup);
+    successBack.addEventListener('click', (e)=> { if(e.target === successBack) hideSuccessPopup(); });
+
+    confirmBookingBtn.addEventListener('click', async ()=>{
+      confirmBookingBtn.disabled = true;
+      confirmBookingBtn.textContent = 'Processing...';
+      finalStatus.textContent = '';
+      const pkg = parsePkg(pkgSelect.value);
+      const payload = {
+        packageName: pkg.name,
+        travelDate: dateInput.value,
+        days: Number(nights.value)||1,
+        perPerson: pkg.price,
+        travelers: travelers.map(t=>({name:t.name, age:t.age})),
+        contact: {name: primaryName.value, email: primaryEmail.value, phone: primaryPhone.value},
+        paymentMethod: paymentMethod.value,
+        total: pkg.price * travelers.length
+      };
+
+      try {
+        const resp = await fetch('/api/bookings', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify(payload)
+        });
+        if(resp.ok){
+          const data = await resp.json();
+          const bookingId = data._id || data.id || data.bookingId || ('bk-' + Date.now().toString(36));
+          saveBookingLocally(payload, bookingId);
+          // show unique popup with booking id
+          showSuccessPopup(bookingId, pkg.name);
+          finalStatus.textContent = '';
+        } else {
+          // server returned non-OK — still save locally with fallback id and show the same success popup
+          const fallbackId = 'TX' + Date.now().toString(36).toUpperCase().slice(-8);
+          payload.bookingId = fallbackId;
+          saveBookingLocally(payload, fallbackId);
+          showSuccessPopup(fallbackId, pkg.name);
+          finalStatus.textContent = '';
+        }
+      } catch (e){
+        // network error — save locally and show same success popup
+        const fakeId = 'TX' + Date.now().toString(36).toUpperCase().slice(-8);
+        payload.bookingId = fakeId;
+        saveBookingLocally(payload, fakeId);
+        showSuccessPopup(fakeId, pkg.name);
+        finalStatus.textContent = '';
+      } finally {
+        confirmBookingBtn.disabled = false;
+        confirmBookingBtn.textContent = 'Confirm booking';
+      }
+    });
+
+    pkgSelect.addEventListener('change', ()=>{
+      updateSummary();
+      const p = parsePkg(pkgSelect.value);
+      if(p && p.date) dateInput.value = p.date;
+      console.log('Package changed ->', parsePkg(pkgSelect.value));
+    });
+    nights.addEventListener('change', updateSummary);
+
+    const observer = new MutationObserver(()=>updateSummary());
+    observer.observe(travelerList,{childList:true,subtree:true});
+
+    (function preselect(){
+      const params = new URLSearchParams(location.search);
+      const q = params.get('package') || params.get('packageName');
+      if(q){
+        for(const opt of pkgSelect.options){
+          if(opt.value && opt.value.toLowerCase().startsWith(q.toLowerCase())){
+            pkgSelect.value = opt.value;
+            const p = parsePkg(opt.value);
+            if(p && p.date) dateInput.value = p.date;
+            break;
+          }
+        }
+      }
+      updateSummary();
+    })();
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Our Tours | TravelX — Karnataka</title>
+  <style>
+    :root{
+      --teal:#008080;
+      --teal-dark:#006666;
+      --muted:#666;
+      --card-bg:#ffffff;
+      --bg-overlay: rgba(0,0,0,0.55);
+      --shadow: 0 6px 18px rgba(0,0,0,0.12);
+      --max-width:1200px;
+      --radius:12px;
+    }
+    *{ box-sizing: border-box; margin:0; padding:0; }
+    html,body{ height:100%; font-family: "Segoe UI", Roboto, Arial, sans-serif; background:#f5f5f5; color:#222; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+
+    /* Header (same look as index/about) */
+    header {
+      background-color: var(--teal);
+      padding: 12px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      color:white;
+      position:sticky;
+      top:0;
+      z-index:40;
+    }
+    .logo { font-size:1.3rem; font-weight:700; letter-spacing:0.4px; }
+    nav { display:flex; align-items:center; gap:18px; }
+    nav ul { list-style:none; display:flex; gap:12px; align-items:center; }
+    nav a { color:white; text-decoration:none; padding:8px 10px; border-radius:6px; font-weight:600; font-size:0.95rem; }
+    nav a.active, nav a:hover { background:var(--teal-dark); }
+    .hamburger {
+      display:none;
+      width:42px; height:42px; border-radius:8px; background:transparent; border:none; color:white;
+      align-items:center; justify-content:center; cursor:pointer;
+    }
+
+    /* Hero banner */
+    .hero {
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.28), rgba(0,0,0,0.28)),
+        url('images/karnataka-hero.jpg') no-repeat center/cover;
+      min-height:40vh;
+      display:flex; align-items:center; justify-content:center; text-align:center;
+      color:white; padding:40px 18px;
+    }
+    .hero h1 { font-size:clamp(1.6rem, 3.5vw, 2.6rem); margin-bottom:8px; }
+    .hero p { font-size:clamp(1rem, 1.6vw, 1.1rem); margin-bottom:12px; color:rgba(255,255,255,0.95); }
+    .hero .btn { background:var(--teal); color:white; padding:10px 16px; border-radius:8px; text-decoration:none; font-weight:700; }
+
+    /* Tours area */
+    .tours {
+      padding: 34px 18px;
+      max-width: var(--max-width);
+      margin: -40px auto 40px; /* lifts cards up over hero a bit */
+    }
+
+    .tour-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .tour-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      display:flex; flex-direction:column;
+      transition: transform .18s ease, box-shadow .18s ease;
+      min-height: 340px;
+    }
+    .tour-card:hover { transform: translateY(-8px); box-shadow: 0 14px 40px rgba(0,0,0,0.15); }
+
+    .tour-img {
+      width:100%; height:180px; object-fit:cover; display:block;
+    }
+
+    .tour-body {
+      padding:14px;
+      display:flex; flex-direction:column; gap:8px; flex:1;
+    }
+    .tour-title { font-size:1.05rem; color:var(--teal); margin-bottom:4px; font-weight:700; }
+    .tour-desc { font-size:0.95rem; color:#333; margin-bottom:6px; flex:1; }
+    .tour-meta { display:flex; justify-content:space-between; gap:10px; color:var(--muted); font-size:0.9rem; margin-top:6px; }
+    .book-row { margin-top:10px; display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .price { color:var(--teal); font-weight:800; }
+    .book-btn { background:var(--teal); color:white; padding:8px 12px; border-radius:8px; text-decoration:none; font-weight:700; }
+
+    footer { text-align:center; padding:16px 12px; color:#fff; background:var(--teal); margin-top:18px; }
+
+    /* Responsive */
+    @media (max-width:1100px){
+      .tour-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width:720px){
+      nav ul { display:none; position:fixed; top:64px; right:14px; background:white; color:#222; padding:12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); border-radius:10px; flex-direction:column; width:220px; }
+      nav ul.show { display:flex; }
+      .hamburger { display:flex; }
+      .tour-grid { grid-template-columns: 1fr; }
+      .hero { min-height:34vh; padding:28px 12px; }
+      .tours { margin-top:10px; padding:22px 12px; }
+    }
+
+    /* small tweaks */
+    .subtle { color:var(--muted); font-size:0.95rem; }
+    a:focus, button:focus { outline:3px solid rgba(0,128,128,0.12); outline-offset:3px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">TravelX</div>
+
+    <nav aria-label="Main navigation">
+      <button class="hamburger" id="hamburger" aria-expanded="false" aria-label="Open menu">
+        <svg width="20" height="14" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="24" height="2" y="0" rx="1" fill="white"/>
+          <rect width="24" height="2" y="8" rx="1" fill="white"/>
+          <rect width="24" height="2" y="16" rx="1" fill="white"/>
+        </svg>
+      </button>
+
+      <ul id="nav-list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="tours.html" class="active">Tours</a></li>
+        <li><a href="booking.html">Book</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="mybookings.html">My Bookings</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero" role="banner" aria-label="Karnataka Tours">
+    <div>
+      <h1>Explore Karnataka — Handpicked Tours</h1>
+      <p>From misty hill stations and coffee estates to ancient ruins and scenic beaches.</p>
+      <a class="btn" href="booking.html">Book a Custom Tour</a>
+    </div>
+  </section>
+
+  <main class="tours" role="main" aria-label="Tour list">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; gap:12px;">
+      <div>
+        <h2 style="margin:0; color:#123;">Karnataka Tour Packages</h2>
+        <div class="subtle">Popular destinations across the state — click Book to pre-fill the package on booking page.</div>
+      </div>
+      <div class="subtle">Showing <strong>15</strong> tours</div>
+    </div>
+
+    <div class="tour-grid" role="list">
+      <!-- 1. Coorg -->
+      <article class="tour-card" role="listitem" aria-labelledby="t1">
+        <img class="tour-img" src="images/coorg.jpg" alt="Coorg - coffee hills" loading="lazy">
+        <div class="tour-body">
+          <div>
+            <div id="t1" class="tour-title">Coorg Coffee Hills</div>
+            <div class="tour-desc">Coffee plantations, Abbey Falls, Kodava culture and homestays in the misty hills.</div>
+          </div>
+          <div class="tour-meta">
+            <div>Duration: 3 days</div>
+            <div class="price">6000</div>
+          </div>
+          <div class="book-row">
+            <a class="book-btn" href="booking.html?package=Coorg">Book</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 2. Mysuru -->
+      <article class="tour-card" role="listitem" aria-labelledby="t2">
+        <img class="tour-img" src="images/mysore.jpg" alt="Mysore Palace" loading="lazy">
+        <div class="tour-body">
+          <div>
+            <div id="t2" class="tour-title">Mysuru Palace & Heritage</div>
+            <div class="tour-desc">Palaces, Chamundi Hills, silk shopping and evening lights at Mysore Palace.</div>
+          </div>
+          <div class="tour-meta">
+            <div>Duration: 1 day</div>
+            <div class="price">700</div>
+          </div>
+          <div class="book-row">
+            <a class="book-btn" href="booking.html?package=Mysuru">Book</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 3. Hampi -->
+      <article class="tour-card" role="listitem" aria-labelledby="t3">
+        <img class="tour-img" src="images/hampi.jpg" alt="Hampi ruins" loading="lazy">
+        <div class="tour-body">
+          <div>
+            <div id="t3" class="tour-title">Hampi Heritage Walk</div>
+            <div class="tour-desc">UNESCO ruins, boulder landscapes, Vittala & Virupaksha temples and sunrise viewpoints.</div>
+          </div>
+          <div class="tour-meta">
+            <div>Duration: 2 days</div>
+            <div class="price">3000</div>
+          </div>
+          <div class="book-row">
+            <a class="book-btn" href="booking.html?package=Hampi">Book</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 4. Gokarna -->
+      <article class="tour-card" role="listitem" aria-labelledby="t4">
+        <img class="tour-img" src="images/gokarna.jpg" alt="Gokarna beach" loading="lazy">
+        <div class="tour-body">
+          <div>
+            <div id="t4" class="tour-title">Gokarna Beach Escape</div>
+            <div class="tour-desc">Om Beach, Kudle and sunset treks — a relaxed coastal retreat with temple-town vibes.</div>
+          </div>
+          <div class="tour-meta">
+            <div>Duration: 3 days</div>
+            <div class="price">4000</div>
+          </div>
+          <div class="book-row">
+            <a class="book-btn" href="booking.html?package=Gokarna">Book</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 5. Chikmagalur -->
+      <article class="tour-card" role="listitem" aria-labelledby="t5">
+        <img class="tour-img" src="images/chikkmagalur.jpg" alt="Chikmagalur coffee" loading="lazy">
+        <div class="tour-body">
+          <div>
+            <div id="t5" class="tour-title">Chikmagalur Coffee Trails</div>
+            <div class="tour-desc">Coffee estates, Mullayanagiri treks, waterfall stops and cool hill air.</div>
+          </div>
+          <div class="tour-meta">
+            <div>Duration: 2 days</div>
+            <div class="price">3500</div>
+          </div>
+          <div class="book-row">
+            <a class="book-btn" href="booking.html?package=Chikmagalur">Book</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 6. Kabini -->
+      <article class="tour-card" role="listitem" aria-labelledby="t6">
+        <img class="tour-img" src="images/kabini.jpg" alt="Kabini wildlife" loading="lazy">
+        <div class="tour-body">
+          <div>
+            <div id="t6" class="tour-title">Kabini Wildlife Safari</div>
+            <div class="tour-desc">Boat safaris, jeep safaris and rich birdlife along the Kabini riverbanks.</div>
+          </div>
+          <div class="tour-meta">
+            <div>Duration: 2 days</div>
+            <div class="price">9000</div>
+          </div>
+          <div class="book-row">
+            <a class="book-btn" href="booking.html?package=Kabini">Book</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 7. Badami -->
+      <article class="tour-card" role="listitem" aria-labelledby="t7">
+        <img class="tour-img" src="images/badami.jpg" alt="Badami caves" loading="lazy">
+        <div class="tour-body">
+          <div>
+            <div id="t7" class="tour-title">Badami, Aihole & Pattadakal</div>
+            <div class="tour-desc">Rock-cut cave temples, Chalukya architecture and heritage trails.</div>
+          </div>
+          <div class="tour-meta">
+            <div>Duration: 2 days</div>
+            <div class="price">3500</div>
+          </div>
+          <div class="book-row">
+            <a class="book-btn" href="booking.html?package=Badami">Book</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 8. Dandeli -->
+      <article class="tour-card" role="listitem" aria-labelledby="t8">
+        <img class="tour-img" src="images/dandeli.jpg" alt="Dandeli river rafting" loading="lazy">
+        <div class="tour-body">
+          <div>
+            <div id="t8" class="tour-title">Dandeli Adventure Sports</div>
+            <div class="tour-desc">White-water rafting, rafting, jungle camping, and wildlife spotting.</div>
+          </div>
+          <div class="tour-meta">
+            <div>Duration: 2 days</div>
+            <div class="price">3500</div>
+          </div>
+          <div class="book-row">
+            <a class="book-btn" href="booking.html?package=Dandeli">Book</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 9. Jog Falls -->
+      <article class="tour-card" role="listitem" aria-labelledby="t9">
+        <img class="tour-img" src="images/jogfalls.jpg" alt="Jog Falls" loading="lazy">
+        <div class="tour-body">
+          <div>
+            <div id="t9" class="tour-title">Jog Falls Excursion</div>
+            <div class="tour-desc">One of India’s highest waterfalls — spectacular during monsoon and post-monsoon.</div>
+          </div>
+          <div class="tour-meta">
+            <div>Duration: 1 day</div>
+            <div class="price">1800</div>
+          </div>
+          <div class="book-row">
+            <a class="book-btn" href="booking.html?package=JogFalls">Book</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 10. Bandipur -->
+      <article class="tour-card" role="listitem" aria-labelledby="t10">
+        <img class="tour-img" src="images/bandipur.jpg" alt="Bandipur national park" loading="lazy">
+        <div class="tour-body">
+          <div>
+            <div id="t10" class="tour-title">Bandipur Tiger Reserve</div>
+            <div class="tour-desc">Safaris, wildlife viewing and wilderness lodges in the Nilgiri biosphere.</div>
+          </div>
+          <div class="tour-meta">
+            <div>Duration: 2 days</div>
+            <div class="price">6000</div>
+          </div>
+          <div class="book-row">
+            <a class="book-btn" href="booking.html?package=Bandipur">Book</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 11. BR Hills -->
+      <article class="tour-card" role="listitem" aria-labelledby="t11">
+        <img class="tour-img" src="images/brhills.jpg" alt="BRT wildlife sanctuary" loading="lazy">
+        <div class="tour-body">
+          <div>
+            <div id="t11" class="tour-title">B.R. Hills (Biligiriranga)</div>
+            <div class="tour-desc">Unique hill-forest blend with wildlife, trekking and tribal culture.</div>
+          </div>
+          <div class="tour-meta">
+            <div>Duration: 2 days</div>
+            <div class="price">3000</div>
+          </div>
+          <div class="book-row">
+            <a class="book-btn" href="booking.html?package=BRHills">Book</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 12. Udupi -->
+      <article class="tour-card" role="listitem" aria-labelledby="t12">
+        <img class="tour-img" src="images/udupi.jpg" alt="Udupi beaches & temples" loading="lazy">
+        <div class="tour-body">
+          <div>
+            <div id="t12" class="tour-title">Udupi & Malpe Beaches</div>
+            <div class="tour-desc">Temple town charm, coastal cuisine and Malpe beach excursions.</div>
+          </div>
+          <div class="tour-meta">
+            <div>Duration: 1-2 days</div>
+            <div class="price">3500</div>
+          </div>
+          <div class="book-row">
+            <a class="book-btn" href="booking.html?package=Udupi">Book</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 13. Sakleshpur -->
+      <article class="tour-card" role="listitem" aria-labelledby="t13">
+        <img class="tour-img" src="images/sakleshpur.jpg" alt="Sakleshpur hills" loading="lazy">
+        <div class="tour-body">
+          <div>
+            <div id="t13" class="tour-title">Sakleshpur Hill Retreat</div>
+            <div class="tour-desc">Coffee plantations, rail heritage, waterfalls and quiet treks.</div>
+          </div>
+          <div class="tour-meta">
+            <div>Duration: 1-2 days</div>
+            <div class="price">5000</div>
+          </div>
+          <div class="book-row">
+            <a class="book-btn" href="booking.html?package=Sakleshpur">Book</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 14. Belur & Halebidu -->
+      <article class="tour-card" role="listitem" aria-labelledby="t14">
+        <img class="tour-img" src="images/belur-halebidu.jpg" alt="Belur and Halebidu temples" loading="lazy">
+        <div class="tour-body">
+          <div>
+            <div id="t14" class="tour-title">Belur & Halebidu Temples</div>
+            <div class="tour-desc">Spectacular Hoysala architecture, intricate carvings and temple history.</div>
+          </div>
+          <div class="tour-meta">
+            <div>Duration: 1 day</div>
+            <div class="price">1200</div>
+          </div>
+          <div class="book-row">
+            <a class="book-btn" href="booking.html?package=BelurHalebidu">Book</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 15. Murudeshwar -->
+      <article class="tour-card" role="listitem" aria-labelledby="t15">
+        <img class="tour-img" src="images/murudeshwar.jpg" alt="Murudeshwar temple and beach" loading="lazy">
+        <div class="tour-body">
+          <div>
+            <div id="t15" class="tour-title">Murudeshwar Temple & Coast</div>
+            <div class="tour-desc">Giant Shiva statue, pristine beaches and water sports on the coast.</div>
+          </div>
+          <div class="tour-meta">
+            <div>Duration: 1-2 days</div>
+            <div class="price">3500</div>
+          </div>
+          <div class="book-row">
+            <a class="book-btn" href="booking.html?package=Murudeshwar">Book</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 TravelX. All Rights Reserved.
+  </footer>
+
+  <script>
+    // Mobile nav toggle (same behavior as your other pages)
+    const hamburger = document.getElementById('hamburger');
+    const navList = document.getElementById('nav-list');
+    hamburger.addEventListener('click', () => {
+      const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+      hamburger.setAttribute('aria-expanded', String(!expanded));
+      navList.classList.toggle('show');
+    });
+
+    // Close nav when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!navList.contains(e.target) && !hamburger.contains(e.target) && navList.classList.contains('show')) {
+        navList.classList.remove('show');
+        hamburger.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Optional: prefill booking page demo (if booking.html reads query param)
+    // No further JS needed here.
+  </script>
+</body>
+</html>

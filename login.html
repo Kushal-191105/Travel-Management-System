@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login | TravelX</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+
+  <style>
+    :root{
+      --teal:#008080;
+      --teal-dark:#006666;
+      --muted:#6b6f72;
+      --card-bg:#ffffff;
+      --radius:12px;
+      --shadow:0 12px 30px rgba(2,50,50,0.08);
+      --maxw:1100px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      background:linear-gradient(180deg,#f4fbfb 0%,#eaf6f6 60%);
+      font-family:"Segoe UI",sans-serif;
+      color:#083232;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    header{
+      background:var(--teal);
+      color:white;
+      padding:12px 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    }
+    .logo{font-weight:700;font-size:1.15rem}
+    nav ul{display:flex;list-style:none;gap:12px}
+    nav a{color:white;text-decoration:none;padding:8px 10px;border-radius:8px;font-weight:600}
+    nav a:hover,nav a.active{background:var(--teal-dark)}
+
+    .wrap{max-width:var(--maxw);margin:40px auto;padding:18px;width:100%}
+    .layout{display:grid;grid-template-columns:1fr 420px;gap:28px}
+    @media(max-width:980px){.layout{grid-template-columns:1fr}}
+
+    .welcome{
+      background:linear-gradient(180deg,rgba(0,128,128,0.03),rgba(0,128,128,0.01));
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow:var(--shadow);
+    }
+    .welcome h1{
+      font-size:2rem;
+      background:linear-gradient(90deg,var(--teal),var(--teal-dark));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      font-weight:800;
+    }
+    .welcome p{color:var(--muted);font-weight:600}
+    .benefits{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+    .benefit{
+      background:#fff;
+      border-radius:10px;
+      padding:10px 12px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      box-shadow:0 6px 20px rgba(6,75,75,0.04);
+    }
+    .benefit i{color:var(--teal)}
+
+    .card{
+      background:var(--card-bg);
+      border-radius:var(--radius);
+      padding:24px;
+      box-shadow:var(--shadow);
+    }
+    .card h2{margin-bottom:16px;color:var(--teal-dark)}
+    label{display:block;margin-bottom:8px;font-weight:700}
+    input[type=email],input[type=password]{
+      width:100%;
+      padding:12px 14px;
+      border-radius:10px;
+      border:1px solid rgba(12,42,42,0.1);
+    }
+    .actions{margin-top:16px;display:flex;gap:12px}
+    .btn-primary{
+      flex:1;
+      background:linear-gradient(90deg,var(--teal),var(--teal-dark));
+      color:white;
+      border:none;
+      padding:12px 14px;
+      border-radius:10px;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .btn-secondary{
+      border:1px solid rgba(3,60,60,0.1);
+      padding:12px 14px;
+      border-radius:10px;
+      background:transparent;
+      color:#163f3f;
+      cursor:pointer;
+      text-decoration:none;
+      text-align:center;
+      flex:1;
+    }
+    .helper{text-align:center;margin-top:10px;font-size:0.9rem;color:var(--muted)}
+    .helper a{color:var(--teal-dark);font-weight:700;text-decoration:none}
+    .pw-wrap{position:relative}
+    .pw-toggle{
+      position:absolute;
+      right:12px;
+      top:50%;
+      transform:translateY(-50%);
+      border:none;
+      background:transparent;
+      color:var(--muted);
+      cursor:pointer;
+    }
+    .error-message{
+      color:red;
+      font-size:0.9rem;
+      margin-top:10px;
+      text-align:center;
+      display:none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">TravelX</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="tours.html">Tours</a></li>
+        <li><a href="booking.html">Book</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="login.html" class="active">Login</a></li>
+        <li><a href="mybookings.html">My Bookings</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="wrap">
+    <div class="layout">
+      <section class="welcome">
+        <h1>Welcome back to TravelX</h1>
+        <p>Sign in to manage bookings, view itineraries and get personalized recommendations.</p>
+        <div class="benefits">
+          <div class="benefit"><i class="fas fa-ticket-alt"></i> Easy Bookings</div>
+          <div class="benefit"><i class="fas fa-headset"></i> 24/7 Support</div>
+          <div class="benefit"><i class="fas fa-clock"></i> Fast Checkout</div>
+        </div>
+      </section>
+
+      <aside class="card">
+        <h2>Account Sign In</h2>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="you@example.com" required />
+          </div>
+
+          <div class="form-group pw-wrap">
+            <label for="password">Password</label>
+            <input id="password" type="password" placeholder="••••••••" required />
+            <button type="button" class="pw-toggle" id="pwToggle"><i class="fas fa-eye"></i></button>
+          </div>
+
+          <div class="error-message" id="errorMsg"></div>
+
+          <div class="actions">
+            <button type="submit" class="btn-primary" id="submitBtn">Login</button>
+            <a href="register.html" class="btn-secondary">Create Account</a>
+          </div>
+
+          <div class="helper">By signing in you agree to our <a href="#">Terms</a> & <a href="#">Privacy</a>.</div>
+        </form>
+      </aside>
+    </div>
+  </div>
+
+  <script type="module">
+    // === Firebase Imports ===
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+
+    // === Your Firebase Config (Replace this with your project config) ===
+    const firebaseConfig = {
+  apiKey: "AIzaSyA79a9zvJYFSClyDF76CdzG-_AWm8nR-dI",
+  authDomain: "travel-management-s.firebaseapp.com",
+  databaseURL: "https://travel-management-s-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "travel-management-s",
+  storageBucket: "travel-management-s.firebasestorage.app",
+  messagingSenderId: "824169581528",
+  appId: "1:824169581528:web:42c5f6811d446e5349c0ad",
+  measurementId: "G-HCLZ7L1152"
+};
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // === DOM elements ===
+    const loginForm = document.getElementById("loginForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const errorMsg = document.getElementById("errorMsg");
+    const submitBtn = document.getElementById("submitBtn");
+
+    // === Login logic ===
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errorMsg.style.display = "none";
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!email || !password) {
+        errorMsg.textContent = "Please fill all fields.";
+        errorMsg.style.display = "block";
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Signing in...";
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        console.log("Login success:", userCredential.user);
+        alert("Login successful!");
+        window.location.href = "index.html"; // Redirect after login
+      } catch (error) {
+        let msg = "Login failed.";
+        if (error.code === "auth/user-not-found") msg = "No user found with this email.";
+        else if (error.code === "auth/wrong-password") msg = "Incorrect password.";
+        else if (error.code === "auth/invalid-email") msg = "Invalid email format.";
+        errorMsg.textContent = msg;
+        errorMsg.style.display = "block";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Login";
+      }
+    });
+  </script>
+
+  <script>
+    // Password toggle
+    const pwToggle = document.getElementById("pwToggle");
+    const pwInput = document.getElementById("password");
+    pwToggle.addEventListener("click", ()=>{
+      const show = pwInput.type === "password";
+      pwInput.type = show ? "text" : "password";
+      pwToggle.innerHTML = show ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
+    });
+  </script>
+</body>
+</html>
